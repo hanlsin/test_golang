@@ -1,2 +1,4 @@
 # test_golang
-private test project for Golang.
+
+This project is a personal test project for Golang.
+
