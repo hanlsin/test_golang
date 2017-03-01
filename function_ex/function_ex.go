@@ -5,7 +5,7 @@ import (
 	"runtime"
 )
 
-type GetFuncInfo func() (string, string, int)
+type GetFuncInfoFuncType func() (string, string, int)
 
 func getFuncInfo() (string, string, int) {
 	// ignore last result value and skip this function
@@ -15,11 +15,11 @@ func getFuncInfo() (string, string, int) {
 	return file, funcname, lineno
 }
 
-func hello(str string) {
+func Hello(str string) {
 	fmt.Println("[FUNC:Hello1] Hello ", str)
 }
 
-func printFuncInfo(str string) int {
+func PrintFuncInfo(str string) int {
 	// ignore last result value
 	pc, file, line, _ := runtime.Caller(0)
 	funcname := runtime.FuncForPC(pc).Name()
@@ -29,14 +29,14 @@ func printFuncInfo(str string) int {
 	return 0
 }
 
-func getFunctionInfo(str string) (string, bool) {
+func GetFunctionInfo(str string) (string, bool) {
 	file, funcname, lineno := getFuncInfo()
 	ret := fmt.Sprintf("[%s:%s:%d] %s", file, funcname, lineno, str)
 	return ret, true
 }
 
-func exFunctionPointer() {
-	var pfnc1 GetFuncInfo
+func FunctionPointer() {
+	var pfnc1 GetFuncInfoFuncType
 	pfnc1 = getFuncInfo
 	_, funcname, lineno := pfnc1()
 	fmt.Printf("111 [%s:%d]\n", funcname, lineno)
