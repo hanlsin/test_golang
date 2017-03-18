@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/hanlsin/test_golang/function_ex"
 	"os"
+
+	"github.com/hanlsin/test_golang/function_ex"
+	"github.com/hanlsin/test_golang/tcpserver"
 )
 
 func main() {
@@ -19,6 +21,16 @@ func main() {
 
 	// Call function with function pointer.
 	function_ex.FunctionPointer()
+
+	// Start TCP server
+	// test: echo -n "test" | netcat localhost 4567
+	// stop: echo -n "STOP SERVER" | netcat localhost 4567
+	fmt.Println("-------------------------")
+	tcpSrvr := tcpserver.NewTCPServer()
+	err := tcpSrvr.Start()
+	if err != nil {
+		fmt.Println("main", err)
+	}
 
 	os.Exit(0)
 }
