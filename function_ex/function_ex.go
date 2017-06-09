@@ -1,4 +1,4 @@
-package function_ex
+package main
 
 import (
 	"fmt"
