@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"strings"
 	"time"
 )
 
@@ -66,7 +67,7 @@ func (ts *TCPServer) Start() error {
 		}
 
 		nowTime := time.Now()
-		fmt.Println("Start Accept:")
+		fmt.Println("[SRVR] Start Accept:")
 		fmt.Println(nowTime)
 
 		// wake up everty 10 seconds
@@ -93,13 +94,13 @@ func (ts *TCPServer) Start() error {
 		go session.handleRequest()
 	}
 
-	fmt.Println("Server Stopped!!")
+	fmt.Println("[SRVR] Server Stopped!!")
 
 	return nil
 }
 
 func (s *Session) handleRequest() {
-	fmt.Println("Begin Session ", s.num)
+	fmt.Println("[SRVR] Begin Session ", s.num)
 	buf := make([]byte, 1024)
 	for {
 		len, err := s.conn.Read(buf)
@@ -108,7 +109,7 @@ func (s *Session) handleRequest() {
 			break
 		}
 
-		fmt.Println("Request len =", len)
+		fmt.Println("[SRVR] Request len =", len)
 		if len == 0 {
 			if err == io.EOF {
 				break
@@ -117,17 +118,22 @@ func (s *Session) handleRequest() {
 		}
 
 		str := string(buf[:len])
-		//str = strings.TrimSpace(str)
-		fmt.Println("Msg:", str)
+		str = strings.TrimSpace(str)
+		fmt.Println("[SRVR] Msg:", str)
 
 		if str == "STOP SERVER" {
-			fmt.Println("Trying to Stop Server from", s.num)
+			fmt.Println("[SRVR] Trying to Stop Server from", s.num)
+			s.conn.Write([]byte("Server will be stopped.\n"))
 			s.srvr.stopSrvrSig <- true
 			break
 		} else if str == "QUIT" || err == io.EOF {
+			s.conn.Write([]byte("Session is over.\n"))
 			break
+		} else {
+			str = fmt.Sprintf("Server got the message: %s\n", str)
+			s.conn.Write([]byte(str))
 		}
 	}
 	s.conn.Close()
-	fmt.Println("End Session ", s.num)
+	fmt.Println("[SRVR] End Session ", s.num)
 }
