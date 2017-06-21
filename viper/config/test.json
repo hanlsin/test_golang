@@ -1,0 +1,16 @@
+{
+    "host": {
+        "address": "127.0.0.1",
+        "port": 7000
+    },
+    "datastore": {
+        "metric": {
+            "host": "127.0.0.1",
+            "port": 8000
+        },
+        "warehouse": {
+            "host": "198.0.0.1",
+            "port": 9000
+        }
+    }
+}

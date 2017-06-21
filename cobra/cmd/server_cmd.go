@@ -8,6 +8,7 @@ import (
 
 var printLog bool
 var logPath string
+var debug bool
 
 var serverStartCmd = &cobra.Command{
 	Use:   "start",
@@ -17,6 +18,10 @@ var serverStartCmd = &cobra.Command{
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		fmt.Println("serverStartCmd: PersistentPreRunE")
+		return nil
+	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		fmt.Println("serverStartCmd: Run")
 		if printLog {
@@ -24,6 +29,9 @@ to quickly create a Cobra application.`,
 		}
 		if logPath != "./log.dat" {
 			fmt.Println("serverStartCmd: New log file path: ", logPath)
+		}
+		if debug {
+			fmt.Println("serverStartCmd: debug mode on")
 		}
 		return nil
 	},
@@ -33,10 +41,11 @@ func startCmd() *cobra.Command {
 	flags := serverStartCmd.Flags()
 
 	flags.BoolVarP(&printLog, "print-log", "p", false,
-		"Whether to print log?")
-
+		"Whether to print log")
 	flags.StringVarP(&logPath, "log-path", "l", "./log.dat",
 		"Set a file path for log file")
+	flags.BoolVarP(&debug, "debug", "d", false,
+		"Whether to start debug mode")
 
 	return serverStartCmd
 }

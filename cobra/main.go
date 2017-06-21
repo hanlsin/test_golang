@@ -18,19 +18,33 @@ import (
 
 	"github.com/hanlsin/test_golang/cobra/cmd"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-func main() {
-	mainCmd := &cobra.Command{
-		Use: "cobra_test",
-		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			fmt.Println("mainCmd: PersistentPreRunE")
-			return nil
-		},
+var mainCmd = &cobra.Command{
+	Use: "cobra_test",
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		fmt.Println("mainCmd: PersistentPreRunE")
+		return nil
+	},
+	/*
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println("mainCmd: Run")
 		},
-	}
+	*/
+}
+
+var config string
+
+func init() {
+	mainCmd.Flags().StringVarP(&config, "config", "c", "(S) config file", "(L) config file")
+	viper.BindPFlag("config", mainCmd.Flags().Lookup("config"))
+}
+
+func main() {
+	cobra.OnInitialize(func() {
+		fmt.Println("cobra.OnInitialize~!!")
+	})
 
 	mainCmd.AddCommand(cmd.VersionCmd)
 	mainCmd.AddCommand(cmd.GetServerCmd())
@@ -38,5 +52,10 @@ func main() {
 	if err := mainCmd.Execute(); err != nil {
 		panic(err)
 	}
+
+	fmt.Println("-------------------------------------------")
+
+	cmd.RootCmd.Execute()
+
 	fmt.Println("Bye~!")
 }
