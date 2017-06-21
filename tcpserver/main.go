@@ -68,7 +68,7 @@ func execTCPClient2() {
 		fmt.Println("Error: cmd.Start:", err)
 	}
 
-	msgList := []string{"XYZ", "9999", "stop server", "STOP SERVER"}
+	msgList := []string{"123", "XYZ", "9999", "stop server", "STOP SERVER"}
 	for _, msg := range msgList {
 		io.WriteString(stdin, msg)
 		io.WriteString(stdin, "\n")

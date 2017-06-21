@@ -40,7 +40,11 @@ func NewTCPServer() *TCPServer {
 
 // Start start TCP server
 func (ts *TCPServer) Start() error {
-	lstnr, err := net.ListenTCP("tcp", &net.TCPAddr{IP: net.ParseIP(ts.ip), Port: ts.port})
+	lstnr, err := net.ListenTCP("tcp",
+		&net.TCPAddr{
+			IP:   net.ParseIP(ts.ip),
+			Port: ts.port,
+		})
 	if err != nil {
 		fmt.Println("ERROR: Listen:", err)
 		return err
@@ -101,6 +105,7 @@ func (ts *TCPServer) Start() error {
 
 func (s *Session) handleRequest() {
 	fmt.Println("[SRVR] Begin Session ", s.num)
+
 	buf := make([]byte, 1024)
 	for {
 		len, err := s.conn.Read(buf)

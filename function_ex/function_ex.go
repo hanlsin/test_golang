@@ -50,3 +50,18 @@ func FunctionPointer() {
 	_, funcname, lineno = pfnc3()
 	fmt.Printf("333 [%s:%d]\n", funcname, lineno)
 }
+
+func LikePrintf(format string, a ...interface{}) {
+	pc, file, line, _ := runtime.Caller(1)
+	funcName := runtime.FuncForPC(pc).Name()
+
+	newF := "[%s:%s:%d] " + format
+	newA := make([]interface{}, len(a)+3)
+	newA[0] = file
+	newA[1] = funcName
+	newA[2] = line
+	for i, v := range a {
+		newA[i+3] = v
+	}
+	fmt.Printf(newF, newA...)
+}

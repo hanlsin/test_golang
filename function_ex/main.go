@@ -19,5 +19,8 @@ func main() {
 	// Call function with function pointer.
 	FunctionPointer()
 
+	// test ListPrintf
+	LikePrintf("%s.....%d\n", "Hello?", 5)
+
 	os.Exit(0)
 }
