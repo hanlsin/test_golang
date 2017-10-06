@@ -2,6 +2,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "plugin hello test",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "remotePath": "",
+            "port": 2345,
+            "host": "127.0.0.1",
+            "program": "${workspaceRoot}/plugin/lib/hello/hello.go",
+            "env": {},
+            "args": [
+            ],
+            "showLog": true
+        },
+        {
             "name": "viper test",
             "type": "go",
             "request": "launch",
